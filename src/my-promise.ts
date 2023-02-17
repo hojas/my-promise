@@ -135,17 +135,14 @@ export class MyPromise {
     return onFulfilled(value)
   }
 
-  // done
   static resolve(value?: any) {
     return new MyPromise(resolve => resolve(value))
   }
 
-  // done
   static reject(reason?: any) {
     return new MyPromise((_, reject) => reject(reason))
   }
 
-  // done
   static all(values: any[]) {
     return new MyPromise((resolve, reject) => {
       const len = values.length
@@ -171,7 +168,6 @@ export class MyPromise {
     })
   }
 
-  // done
   static race(values: any[]) {
     return new MyPromise((resolve, reject) =>
       values.forEach(value =>
@@ -182,7 +178,6 @@ export class MyPromise {
     )
   }
 
-  // done
   static allSettled(values: any[]) {
     return new MyPromise(resolve => {
       const resolveDataList: any[] = []
@@ -207,7 +202,6 @@ export class MyPromise {
     })
   }
 
-  // done
   static any(values: any[]) {
     return new MyPromise((resolve, reject) => {
       let rejectedCount = 0

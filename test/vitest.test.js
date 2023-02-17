@@ -1,9 +1,9 @@
 import { describe, it } from 'vitest'
-import { MyPromise as TinyPromise } from '../src/my-promise'
+import { MyPromise as MyPromise } from '../src/my-promise'
 
-describe('TinyPromise methods', () => {
+describe('MyPromise methods', () => {
   it('catch()', async ({ expect }) => {
-    const p = new TinyPromise((_resolve, reject) => reject('p'))
+    const p = new MyPromise((_resolve, reject) => reject('p'))
     try {
       await p
     } catch (err) {
@@ -13,7 +13,7 @@ describe('TinyPromise methods', () => {
 
   it('finally()', async ({ expect }) => {
     {
-      const p = new TinyPromise(resolve => resolve('p'))
+      const p = new MyPromise(resolve => resolve('p'))
       let res = ''
       await p
         .then(res => res)
@@ -24,7 +24,7 @@ describe('TinyPromise methods', () => {
     }
 
     {
-      const p = new TinyPromise((_resolve, reject) => reject('p'))
+      const p = new MyPromise((_resolve, reject) => reject('p'))
       let res = ''
       await p
         .catch(err => err)
@@ -36,30 +36,30 @@ describe('TinyPromise methods', () => {
   })
 })
 
-describe('TinyPromise static methods', () => {
+describe('MyPromise static methods', () => {
   it('resolve()', async ({ expect }) => {
     {
-      const res = await TinyPromise.resolve(1)
+      const res = await MyPromise.resolve(1)
       expect(res).toBe(1)
     }
 
     {
-      const p = new TinyPromise(resolve => resolve('p'))
-      const res = await TinyPromise.resolve(p)
+      const p = new MyPromise(resolve => resolve('p'))
+      const res = await MyPromise.resolve(p)
       expect(res).toBe('p')
     }
   })
 
   it('reject()', async ({ expect }) => {
     try {
-      await TinyPromise.reject(1)
+      await MyPromise.reject(1)
     } catch (err) {
       expect(err).toBe(1)
     }
 
     try {
-      const p = new TinyPromise((_, reject) => reject('p'))
-      await TinyPromise.reject(p)
+      const p = new MyPromise((_, reject) => reject('p'))
+      await MyPromise.reject(p)
     } catch (err) {
       expect(err.result).toBe('p')
     }
@@ -67,47 +67,47 @@ describe('TinyPromise static methods', () => {
 
   it('all()', async ({ expect }) => {
     {
-      const p1 = new TinyPromise(resolve => resolve('p1'))
-      const p2 = new TinyPromise(resolve => resolve('p2'))
-      const res = await TinyPromise.all([p1, p2])
+      const p1 = new MyPromise(resolve => resolve('p1'))
+      const p2 = new MyPromise(resolve => resolve('p2'))
+      const res = await MyPromise.all([p1, p2])
       expect(JSON.stringify(res)).toBe('["p1","p2"]')
     }
 
     {
-      const p1 = new TinyPromise(resolve => resolve('p1'))
+      const p1 = new MyPromise(resolve => resolve('p1'))
       const p2 = 'p2'
-      const res = await TinyPromise.all([p1, p2])
+      const res = await MyPromise.all([p1, p2])
       expect(JSON.stringify(res)).toBe('["p1","p2"]')
     }
   })
 
   it('race()', async ({ expect }) => {
-    const p1 = new TinyPromise(resolve => resolve('p1'))
+    const p1 = new MyPromise(resolve => resolve('p1'))
     const p2 = 'p2'
-    const res = await TinyPromise.race([p1, p2])
+    const res = await MyPromise.race([p1, p2])
     expect(res).toBe('p2')
   })
 
   it('any()', async ({ expect }) => {
     {
-      const p1 = new TinyPromise((_, reject) => reject('p1'))
-      const p2 = new TinyPromise(resolve => resolve('p2'))
-      const res = await TinyPromise.any([p1, p2])
+      const p1 = new MyPromise((_, reject) => reject('p1'))
+      const p2 = new MyPromise(resolve => resolve('p2'))
+      const res = await MyPromise.any([p1, p2])
       expect(res).toBe('p2')
     }
 
     {
-      const p1 = new TinyPromise((_, reject) => reject('p1'))
+      const p1 = new MyPromise((_, reject) => reject('p1'))
       const p2 = 'p2'
-      const res = await TinyPromise.any([p1, p2])
+      const res = await MyPromise.any([p1, p2])
       expect(res).toBe('p2')
     }
 
     {
-      const p1 = new TinyPromise((_, reject) => reject('p1'))
-      const p2 = new TinyPromise((_, reject) => reject('p2'))
+      const p1 = new MyPromise((_, reject) => reject('p1'))
+      const p2 = new MyPromise((_, reject) => reject('p2'))
       try {
-        await TinyPromise.any([p1, p2])
+        await MyPromise.any([p1, p2])
       } catch (err) {
         expect(err).toBe('All promises were rejected')
       }
@@ -116,9 +116,9 @@ describe('TinyPromise static methods', () => {
 
   it('allSettled()', async ({ expect }) => {
     {
-      const p1 = new TinyPromise(resolve => resolve('p1'))
-      const p2 = new TinyPromise(resolve => resolve('p2'))
-      const res = await TinyPromise.allSettled([p1, p2])
+      const p1 = new MyPromise(resolve => resolve('p1'))
+      const p2 = new MyPromise(resolve => resolve('p2'))
+      const res = await MyPromise.allSettled([p1, p2])
       expect(res[0].status).toBe('fulfilled')
       expect(res[0].value).toBe('p1')
       expect(res[1].status).toBe('fulfilled')
@@ -126,9 +126,9 @@ describe('TinyPromise static methods', () => {
     }
 
     {
-      const p1 = new TinyPromise(resolve => resolve('p1'))
-      const p2 = new TinyPromise((_, reject) => reject('p2'))
-      const res = await TinyPromise.allSettled([p1, p2])
+      const p1 = new MyPromise(resolve => resolve('p1'))
+      const p2 = new MyPromise((_, reject) => reject('p2'))
+      const res = await MyPromise.allSettled([p1, p2])
       expect(res[0].status).toBe('fulfilled')
       expect(res[0].value).toBe('p1')
       expect(res[1].status).toBe('rejected')
@@ -136,10 +136,10 @@ describe('TinyPromise static methods', () => {
     }
 
     {
-      const p1 = new TinyPromise(resolve => resolve('p1'))
-      const p2 = new TinyPromise((_, reject) => reject('p2'))
+      const p1 = new MyPromise(resolve => resolve('p1'))
+      const p2 = new MyPromise((_, reject) => reject('p2'))
       const p3 = 'p3'
-      const res = await TinyPromise.allSettled([p1, p2, p3])
+      const res = await MyPromise.allSettled([p1, p2, p3])
       expect(res[0].status).toBe('fulfilled')
       expect(res[0].value).toBe('p1')
       expect(res[1].status).toBe('rejected')

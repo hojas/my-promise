@@ -1,0 +1,33 @@
+{
+  "name": "my-promise",
+  "version": "1.0.0",
+  "packageManager": "pnpm@7.27.0",
+  "license": "MIT",
+  "repository": "hojas/my-promise",
+  "bugs": "https://github.com/hojas/my-promise/issues",
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/my-promise.d.ts",
+  "main": "./dist/my-promise.umd.cjs",
+  "module": "./dist/my-promise.js",
+  "exports": {
+    ".": {
+      "import": "./dist/my-promise.js",
+      "require": "./dist/my-promise.umd.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc --declaration --emitDeclarationOnly",
+    "test": "pnpm run build && promises-aplus-tests ./test/index.test.js",
+    "test:vitest": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "prettier": "^2.8.4",
+    "promises-aplus-tests": "^2.1.2",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.1",
+    "vitest": "^0.28.5"
+  }
+}

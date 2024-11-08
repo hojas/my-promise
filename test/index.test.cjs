@@ -1,8 +1,8 @@
-const { MyPromise } = require('../dist/my-promise.umd.js')
+const { MyPromise } = require('../dist/my-promise.umd.cjs')
 
 MyPromise.deferred = function () {
   const result = {}
-  result.promise = new MyPromise(function (resolve, reject) {
+  result.promise = new MyPromise((resolve, reject) => {
     result.resolve = resolve
     result.reject = reject
   })

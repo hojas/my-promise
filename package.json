@@ -1,5 +1,6 @@
 {
   "name": "my-promise",
+  "type": "module",
   "version": "1.0.0",
   "packageManager": "pnpm@9.12.3",
   "license": "MIT",
@@ -19,16 +20,15 @@
   ],
   "scripts": {
     "build": "vite build && tsc --declaration --emitDeclarationOnly",
-    "test": "pnpm run build && promises-aplus-tests ./test/index.test.js"
+    "test": "pnpm run build && promises-aplus-tests test/index.test.cjs",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
     "@types/node": "^22.9.0",
     "eslint": "^9.14.0",
-    "prettier": "^3.3.3",
     "promises-aplus-tests": "^2.1.2",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10",
-    "vitest": "^2.1.4"
+    "vite": "^5.4.10"
   }
 }

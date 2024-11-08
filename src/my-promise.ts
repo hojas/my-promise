@@ -17,14 +17,17 @@ interface Callback {
   onRejected?: RejectedFn
 }
 
-const isFunction = (value: any): value is Function =>
-  typeof value === 'function'
+function isFunction(value: any): value is Function {
+  return typeof value === 'function'
+}
 
-const isObject = (value: any): value is Object =>
-  Object.prototype.toString.call(value) === '[object Object]'
+function isObject(value: any): value is object {
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
 
-const isThenable = (thenable: any): boolean =>
-  (isFunction(thenable) || isObject(thenable)) && 'then' in thenable
+function isThenable(thenable: any): boolean {
+  return (isFunction(thenable) || isObject(thenable)) && 'then' in thenable
+}
 
 export class MyPromise {
   state = STATE.PENDING
@@ -37,19 +40,22 @@ export class MyPromise {
 
     let ignore = false
     const resolve = (value: any) => {
-      if (ignore) return
+      if (ignore)
+        return
       ignore = true
       this._resolvePromise(value, onFulfilled, onRejected)
     }
     const reject = (reason: any) => {
-      if (ignore) return
+      if (ignore)
+        return
       ignore = true
       onRejected(reason)
     }
 
     try {
       executor(resolve, reject)
-    } catch (error) {
+    }
+    catch (error) {
       reject(error)
     }
   }
@@ -77,12 +83,13 @@ export class MyPromise {
   finally(callback: Function) {
     return this.then(
       (value: any) => MyPromise.resolve(callback()).then(() => value),
-      (reason: any) => MyPromise.reject(callback()).then(() => reason)
+      (reason: any) => MyPromise.reject(callback()).then(() => reason),
     )
   }
 
   private _transition(state: STATE, result: any) {
-    if (this.state !== STATE.PENDING) return
+    if (this.state !== STATE.PENDING)
+      return
     this.state = state
     this.result = result
 
@@ -106,7 +113,8 @@ export class MyPromise {
           ? resolve(onRejected(this.result))
           : reject(this.result)
       }
-    } catch (error) {
+    }
+    catch (error) {
       return reject(error)
     }
   }
@@ -114,7 +122,7 @@ export class MyPromise {
   private _resolvePromise(
     value: any,
     onFulfilled: FulfilledFn,
-    onRejected: RejectedFn
+    onRejected: RejectedFn,
   ) {
     if (value === this) {
       return onRejected(new TypeError('Can not fulfill promise with itself'))
@@ -128,7 +136,8 @@ export class MyPromise {
         if (isFunction(then)) {
           return new MyPromise(then.bind(value)).then(onFulfilled, onRejected)
         }
-      } catch (error) {
+      }
+      catch (error) {
         return onRejected(error)
       }
     }
@@ -160,9 +169,9 @@ export class MyPromise {
       values.forEach((value, i) => {
         value instanceof MyPromise
           ? value.then(
-              val => addPromise(i, val),
-              reason => reject(reason)
-            )
+            val => addPromise(i, val),
+            reason => reject(reason),
+          )
           : addPromise(i, value)
       })
     })
@@ -173,13 +182,13 @@ export class MyPromise {
       values.forEach(value =>
         value instanceof MyPromise
           ? value.then(resolve, reject)
-          : resolve(value)
-      )
+          : resolve(value),
+      ),
     )
   }
 
   static allSettled(values: any[]) {
-    return new MyPromise(resolve => {
+    return new MyPromise((resolve) => {
       const resolveDataList: any[] = []
       let resolvedCount = 0
 
@@ -194,10 +203,10 @@ export class MyPromise {
       values.forEach((value: any, i: number) =>
         value instanceof MyPromise
           ? value.then(
-              (res: any) => addPromise(STATE.FULFILLED, res, i),
-              (err: any) => addPromise(STATE.REJECTED, err, i)
-            )
-          : addPromise(STATE.FULFILLED, value, i)
+            (res: any) => addPromise(STATE.FULFILLED, res, i),
+            (err: any) => addPromise(STATE.REJECTED, err, i),
+          )
+          : addPromise(STATE.FULFILLED, value, i),
       )
     })
   }
@@ -206,17 +215,17 @@ export class MyPromise {
     return new MyPromise((resolve, reject) => {
       let rejectedCount = 0
 
-      values.forEach(value => {
+      values.forEach((value) => {
         value instanceof MyPromise
           ? value.then(
-              (val: any) => resolve(val),
-              () => {
-                rejectedCount++
-                if (rejectedCount === values.length) {
-                  reject('All promises were rejected')
-                }
+            (val: any) => resolve(val),
+            () => {
+              rejectedCount++
+              if (rejectedCount === values.length) {
+                reject('All promises were rejected')
               }
-            )
+            },
+          )
           : resolve(value)
       })
     })

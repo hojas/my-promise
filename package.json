@@ -2,7 +2,7 @@
   "name": "my-promise",
   "type": "module",
   "version": "1.0.0",
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@9.14.2",
   "license": "MIT",
   "repository": "hojas/my-promise",
   "bugs": "https://github.com/hojas/my-promise/issues",
@@ -24,11 +24,11 @@
     "lint": "eslint ."
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.8.0",
-    "@types/node": "^22.9.0",
-    "eslint": "^9.14.0",
+    "@antfu/eslint-config": "^3.9.2",
+    "@types/node": "^22.9.3",
+    "eslint": "^9.15.0",
     "promises-aplus-tests": "^2.1.2",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.10"
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
   }
 }
